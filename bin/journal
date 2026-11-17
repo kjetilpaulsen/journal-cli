@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Open the journal TUI inside the running journal-cli container.
+#
+#   journal        unlock, then browse, search and write
+#   journal new    write a new entry right away (no password needed)
+#
+# Install: install -Dm755 bin/journal ~/.local/bin/journal
+set -euo pipefail
+
+container=journal-cli
+
+if [[ "$(podman container inspect --format '{{.State.Running}}' "$container" 2>/dev/null)" != true ]]; then
+    systemctl --user start journal-cli.service
+fi
+
+# --env without a value passes your terminal's own TERM/COLORTERM through.
+exec podman exec --interactive --tty --env TERM --env COLORTERM "$container" journal-cli "$@"

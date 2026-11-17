@@ -1,0 +1,42 @@
+# Rootless Podman Quadlet unit for journal-cli. The container idles; `bin/journal` opens the
+# TUI inside it with `podman exec`.
+#
+#   podman build -t journal-cli .
+#   install -Dm644 deploy/journal-cli.container ~/.config/containers/systemd/journal-cli.container
+#   systemctl --user daemon-reload
+#   systemctl --user start journal-cli
+
+[Unit]
+Description=journal-cli (journal TUI; open it with `journal`)
+Wants=journal-service.service
+After=journal-service.service
+
+[Container]
+Image=localhost/journal-cli:latest
+ContainerName=journal-cli
+
+# Run as the image's uid 10001, mapped to your own host uid, like journal-service.
+UserNS=keep-id:uid=10001,gid=10001
+
+# No network: the only way out is journal-service's Unix socket.
+Network=none
+ReadOnly=true
+NoNewPrivileges=true
+DropCapability=ALL
+
+# The host's timezone, so new entries are stamped with your local time.
+Timezone=local
+
+Volume=%h/.config/journal-cli:/xdg/config/journal-cli:ro
+Volume=%h/.local/state/journal-cli:/xdg/state/journal-cli
+# The service's socket *directory*: journal-service recreates the socket file when it
+# restarts, and only a directory mount sees the new one.
+Volume=%t/journal-service:/xdg/runtime/journal-service
+
+[Service]
+# Podman refuses to bind-mount a source that does not exist.
+ExecStartPre=/usr/bin/mkdir -p -m 0700 %h/.config/journal-cli %h/.local/state/journal-cli %t/journal-service
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

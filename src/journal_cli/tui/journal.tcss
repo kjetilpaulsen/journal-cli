@@ -1,0 +1,94 @@
+/* The key bindings of the current screen, as a menu bar at the top. */
+Footer {
+    dock: top;
+}
+
+/* -- entry list ------------------------------------------------------------------------- */
+
+#entries {
+    height: 1fr;
+}
+
+#status {
+    height: 1;
+    padding: 0 1;
+    background: $panel;
+    color: $text-muted;
+}
+
+#search {
+    display: none;
+    padding: 0 1;
+}
+
+#search.active {
+    display: block;
+}
+
+/* -- dialogs: unlock, confirm, change password --------------------------------------------- */
+
+UnlockScreen, ConfirmScreen, PasswordScreen {
+    align: center middle;
+}
+
+.dialog {
+    width: 64;
+    height: auto;
+    padding: 1 2;
+    border: round $primary;
+    background: $surface;
+}
+
+#confirm-box {
+    border: round $warning;
+}
+
+.dialog-title {
+    text-style: bold;
+    color: $accent;
+    margin-bottom: 1;
+}
+
+.dialog Input {
+    margin-bottom: 1;
+}
+
+.dialog-hint {
+    margin-top: 1;
+    color: $text-muted;
+}
+
+/* -- editor and viewer ------------------------------------------------------------------ */
+
+#editor-title, #viewer-heading {
+    height: auto;
+    padding: 0 1;
+    background: $panel;
+    text-style: bold;
+}
+
+#editor-body {
+    height: 1fr;
+    border: none;
+    padding: 1 2;
+}
+
+#editor-tags-row {
+    height: 1;
+    background: $panel;
+}
+
+#editor-tags-label {
+    width: auto;
+    padding: 0 1;
+    color: $text-muted;
+}
+
+#editor-tags {
+    width: 1fr;
+}
+
+#viewer-scroll {
+    height: 1fr;
+    padding: 1 2;
+}

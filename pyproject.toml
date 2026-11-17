@@ -1,0 +1,33 @@
+[project]
+name = "journal-cli"
+version = "0.1.0"
+description = "Terminal frontend for journal-service: unlock, browse, search and write journal entries"
+readme = "README.md"
+authors = [{ name = "Kjetil" }]
+requires-python = ">=3.14"
+dependencies = [
+    "textual>=8.2.8",
+]
+
+[project.scripts]
+journal-cli = "journal_cli.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
